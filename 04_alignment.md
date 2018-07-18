@@ -1,7 +1,7 @@
 # Alignment
 
 ## HISAT2 alignment
-We have RNA-seq paired-end reads files and also built HISAT2 reference index to align to. Let us perform alignments with HISAT2 (a reference genome-based/splice-aware NGS short aligner) to the genome and transcriptome.
+Both RNA-seq paired-end reads files and HISAT2 reference index are now available. Let us perform alignments with HISAT2 (a reference genome-based/splice-aware NGS short aligner) to the genome and transcriptome. RNA-seq BAM files can be very useful to many applications including genomic variants (e.g., RNA-editing), gene fusion, expression analysis, and discovery of *de novo* isoforms.  
 
 First, begin by making the appropriate output directory for our alignment results if not exist.
 
@@ -13,7 +13,7 @@ cd $RNA_ALIGN_DIR
 
 ```
 
-HISAT2 uses a graph-based alignment and has succeeded HISAT and TOPHAT2. The output of this step will be a SAM/BAM file for each data set.
+HISAT2 uses a graph-based alignment and has succeeded HISAT and TopHat2. The output of this step will be a SAM/BAM file for each data set.
 
 Refer to HISAT2 manual for a more detailed explanation:
 
@@ -84,3 +84,5 @@ ls -l *.bam
 
 ```
 Q4.1 By merging the triplicate BAM files, do we lose the information from which BAM file each read originates?
+
+Q4.2 Consider two extra post-processing steps 1) MAPQ>=1 and 2) collapse duplicated reads within an individual sample 

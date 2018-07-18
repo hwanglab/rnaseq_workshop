@@ -16,9 +16,7 @@ find *.bam -exec echo samtools index {} \; | sh
 Start IGV on your laptop.
 
 ```bash
-binf
-cd tools/varan-gie_0.2.9
-bash ./igv_varan.sh &
+igv.sh &
 ```
 
 Load the UHR.bam & HBR.bam files in IGV. Make sure that set Human (hg38) to reference genome sequence. You can load the necessary files (`UHR.bam` and `HBR.bam`) in IGV directly using 'File' -> 'Load from URL'. You may wish to customize the track names as you load them in to keep them straight. Do this by right-clicking on the alignment track and choosing 'Rename Track'.
@@ -35,11 +33,12 @@ Q5.2 Differentially expressed genes,
 Try to find a variant position in the RNAseq data:
 - HINT: *DDX17* is a highly expressed gene with several variants in its 3 prime UTR.
 - Other highly expressed genes you might explore are: *NUP50*, *CYB5R3*, and *EIF3L* (all have at least one transcribed variant).
-- Are these variants previously known (e.g., present in dbSNP or gnomad)?
-- Load [gnomad vcf file]($RNA_HOME/refs/gnomad.exomes.r2.0.2.sites.liftover.b38.22.vcf) into the current IGV session.
+- Are these variants previously known (e.g., present in dbSNP)?
+- File > Load from Server > Annotation > [v] Common SNPs 1.4.2
 - How should we interpret the allele frequency of each variant? Remember that we have rather unusual samples here in that they are actually pooled RNAs corresponding to multiple individuals (genotypes).
 
-## Something useful
+## Note
 - Save the session
-- Snapshot
-- [tutorial](https://github.com/griffithlab/rnaseq_tutorial/wiki/IGV-Tutorial) in depth
+- Take snapshots
+- [tutorial](https://github.com/griffithlab/rnaseq_tutorial/wiki/IGV-Tutorial) for a comprehensive IGV usage
+- http://software.broadinstitute.org/software/igv/book/export/html

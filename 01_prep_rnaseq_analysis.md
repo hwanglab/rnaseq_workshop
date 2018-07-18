@@ -1,4 +1,5 @@
 # Preparing RNA-seq analysis
+In this session, we learn what the requirement are before we start to do data analysis.
 
 ## Definitions
 - Reference genome - The nucleotide sequence of the chromosomes of a species. Genes are the functional units of a reference genome and gene annotations describe the structure of transcripts expressed from those gene loci.
@@ -27,26 +28,19 @@ NGS reads are short (in general, Illumina sequencing platform) and RNA-seq reads
 
 ![align_to_splice_out_ref](images/te-203-9.png)
 
-### Download a preprocessed GTF file
+### View a preprocessed GTF file
 
 In general, two gene prediction models are available; RefSeq and Ensembl/GENCODE. RefSeq is more conservative and mostly used in clinical settings whereas Ensembl is more inclusive and widely used in research settings. In this tutorial we will use annotations obtained from Ensembl (Homo_sapiens.GRCh38.86.gtf.gz) for chromosome 22 only. But, you should get familiar with sources of complete gene annotations for RNA-seq analysis.
 
-Copy the gene annotation files to the working directory.
-
-```bash
-echo $RNA_REFS_DIR
-cd $RNA_REFS_DIR
-wget http://genomedata.org/rnaseq-tutorial/annotations/GRCh38/chr22_with_ERCC92.gtf
-```
-
-Take a look at the contents of the gtf file. Press 'q' to exit the 'less' display.
+Take a look at the contents of the gtf file ($RNA_REF_GTF). Press 'q' to exit the 'less' display.
 
 ```bash
 echo $RNA_REF_GTF
+less $RNA_REF_GTF
 grep start_codon $RNA_REF_GTF | less -S
 ```
 
-How many unique gene IDs are in the .gtf file?
+Q1.4 How many unique gene IDs are in the .gtf file?
 
 We can use a perl command-line command to find out:
 
@@ -60,7 +54,18 @@ perl -ne 'if ($_ =~ /(gene_id\s\"ENSG\w+\")/){print "$1\n"}' $RNA_REF_GTF | sort
 - The output of this perl command will be a long list of ENSG Ids.
 - By piping to sort, then uniq, then word count we can count the unique number of genes in the file.
 
-Q1.4 List out all transcript IDs included in the GTF file.
+Q1.5 List out all transcript IDs included in the GTF file.
+
+### Open GTF file in IGV
+IGV will be discussed in the RNA-seq alignment session. IGV also suppors GTF file format. Run IGV and load the gtf file,
+```bash
+igv.sh &
+change to hg38
+File > Load from file
+Select chr22_with_ERCC92.gtf and Open
+Go to chr22
+Click right mouse button in the gtf pannel and select 'Expanded'
+```
 
 ## Resources
 
@@ -109,3 +114,4 @@ How to get gene symbols and descriptions for all UCSC genes:
 
 To get annotations for the whole genome, make sure 'genome' is selected beside 'region'. By default, the files downloaded above will be compressed. To decompress, use 'gunzip filename' in linux.
 
+ 

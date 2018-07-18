@@ -1,8 +1,8 @@
 # RNA-seq Data
 
-The test data consists of two commercially available RNA samples: [Universal Human Reference](https://github.com/griffithlab/rnaseq_tutorial/wiki/ResourceFiles/UHR.pdf) (UHR) and [Human Brain Reference](https://github.com/griffithlab/rnaseq_tutorial/wiki/ResourceFiles/HBR.pdf) (HBR). The UHR is total RNA isolated from a diverse set of 10 cancer cell lines. The HBR is total RNA isolated from the brains of 23 Caucasians, male and female, of varying age but mostly 60-80 years old. In this workshop, we consider UHR as an experimental group and HBR for a control group.
+The test data consists of two commercially available RNA samples: [Universal Human Reference](https://github.com/griffithlab/rnaseq_tutorial/wiki/ResourceFiles/UHR.pdf) (UHR) and [Human Brain Reference](https://github.com/griffithlab/rnaseq_tutorial/wiki/ResourceFiles/HBR.pdf) (HBR). The UHR is total RNA isolated from a diverse set of 10 cancer cell lines. The HBR is total RNA isolated from the brains of 23 Caucasians, male and female, of varying age but mostly 60-80 years old. In this workshop, we consider UHR as a control group and HBR for an experimental group.
 
-## ERCC
+## ERCC (within a sample and between samples)
 We added an aliquot of the [ERCC ExFold RNA Spike-In Control Mixes](https://github.com/griffithlab/rnaseq_tutorial/wiki/ResourceFiles/ERCC.pdf) to each sample. The spike-in consists of 92 transcripts that are present in known concentrations across a wide abundance range (from very few copies to many copies). This range allows us to test the degree to which the RNA-seq assay (including all laboratory and analysis steps) accurately reflects the relative abundance of transcript species within a sample. There are two 'mixes' of these transcripts to allow an assessment of differential expression output between samples if you put one mix in each of your two comparisons. In our case, Mix1 was added to the UHR sample, and Mix2 was added to the HBR sample.
 
 ![ercc_mix](images/ERCC-f1.jpg)
@@ -10,7 +10,7 @@ We added an aliquot of the [ERCC ExFold RNA Spike-In Control Mixes](https://gith
 
 https://www.thermofisher.com/order/catalog/product/4456740
 
-## Two triplicate human samples
+## Two triplicates
 We have 3 complete experimental replicates for each sample. This allows us to assess the technical variability of our overall process of producing RNA-seq data in the lab.
 
 For all libraries we prepared low-throughput (Set A) [TruSeq Stranded Total RNA Sample Prep Kit](http://products.illumina.com/products/truseq_stranded_total_rna_sample_prep_kit.html) libraries with Ribo-Zero Gold to remove both cytoplasmic and mitochondrial rRNA.
