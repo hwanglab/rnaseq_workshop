@@ -138,10 +138,10 @@ Check files in the output directory, `expr_output`
 
 ### Task 1
 We prepare another read count matrix file for you.
-1. Extract `/mnt/isilon/data/w_QHS/hwangt-share/Datasets/Informatics_workshop/rnaseq/rnaseq_ex2.tar.gz` into your project directory
+1. Extract `/mnt/isilon/data/w_QHS/hwangt-share/Datasets/Informatics_workshop/rnaseq/test_data_for_DESeq2.tar.gz` into your project directory
 1. Summarize read count matrix on the features
 1. Repeat the same analysis done above
-1. Compare the results (table and figures) with the one in your project directory like `~/projects/rnaseq_ex2/output`
+1. Compare the results (table and figures) with the one in your project directory like `~/projects/test_data_for_DESeq2/DESeq2_results`
  
 ### Task 2
 Use DESeq2 report to perform pathway analysis so that you can see which pathway turns on or off in the experimental samples comparing the control samples.

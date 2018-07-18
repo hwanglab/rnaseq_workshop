@@ -78,7 +78,7 @@ cd ~/projects/
 1. Relogin and make sure that the new environment variables are applied! 
 
 ## Download the workshop material
-1. `cp /mnt/isilon/data/w_QHS/hwangt-share/Datasets/Informatics_workshop/bioinfo_2018July.tar.gz ~/projects`
+1. `cp /mnt/isilon/data/w_QHS/hwangt-share/Datasets/Informatics_workshop/rnaseq/bioinfo_2018July.tar.gz ~/projects`
 1. `cd ~/projects`
 1. `tar zxvf bioinfo_2018July.tar.gz`
 1. `binf`
