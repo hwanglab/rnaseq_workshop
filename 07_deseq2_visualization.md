@@ -8,39 +8,45 @@ In this tutorial, you will:
  
 ## Main objectives of differential gene expression analysis
  
-RNA-seq is often used to compare one tissue type to another (liver vs. spleen), or experimental group vs. control group sample. There are many specific genes transcribed in liver but not in the spleen or vice versa. This is called "a difference in library composition".
+RNA-seq is often used to compare one tissue type to another (liver vs. spleen), or experimental group vs. control group sample. There are many specific genes transcribed in the liver but not in the spleen or vice versa. This is called "a difference in library composition".
 
-Open the following R script with `rstudio` that performs RNA-Seq differential analysis.  
+Open the following R script with `rstudio` that performs an RNA-Seq differential analysis.  
 
 ```bash
-
-cd $RNA_RC_DIR
+rc
 rstudio runDESeq2FromFeatureCount2.r &
 ```
 
+First, R library called 'apeglm' is required. Let us first install in R
+
+```r
+source("http://bioconductor.org/biocLite.R")
+biocLite("apeglm")    # only if devtools not yet installed
+library(apeglm) #check if the module wa installed successfully 
+```  
 
 ### Preparing DESeq2 input
 * Read the count matrix,
 * Assign which sample belongs to which group, and
-* Retain only genes where half of samples have at least 10 reads,
+* Retain only genes where half of the samples have at least 10 reads,
 
 ### DESeq2
-DESeq2 (or edgeR) handles both library size and composition issues using log normalization and negative bionomial distribution model. Refer to [DESeq2 manual](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#how-do-i-use-vst-or-rlog-data-for-differential-testing) for more detail. 
+DESeq2 (or edgeR) handles both library size and composition issues using log normalization and negative binomial distribution model. Refer to [DESeq2 manual](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#how-do-i-use-vst-or-rlog-data-for-differential-testing) for more detail. 
 
 #### Scaling Factor (Normalize library size)
-Given a matrix with J columns (samples) and n rows (genes), we estimates the size factors as follows: Each column element is divided by the geometric means of the rows. For each sample, the median (or, if requested, another location estimator) of these ratios (skipping the genes with a geometric mean of zero) is used as the size factor for this column.
-	
+Given a matrix with J columns (samples) and n rows (genes), we estimate the size factors as follows: Each column element is divided by the geometric means of the rows. For each sample, the median (or, if requested, another location estimator) of these ratios (skipping the genes with a geometric mean of zero) is used as the size factor for this column.
+    
 Let K<sub>g,j</sub> be a gene count at gene g and sample j. The scaling factor for sample j is thus obtained as:
 
 ![s_j=median\left(\frac{K_{g,j}}{\left(\prod_{j=1}^{J}K_{g,j}\right)^{1/J}}\right)](http://latex.codecogs.com/png.latex?s_j&space;=&space;median\left\(\frac{K_{g,j}}{\left(\prod_{j=1}^{J}K_{g,j}\right&space;)^{1/J}}\right\))
 
 ,which is implemented in `DESeq2::estimateSizeFactors()`.
-	
+    
 Q7.1: Let us compare row counts boxplot and density plot before/after applying the scaling factor
 
 #### Modeling read counts
 
-When working with biological replicates, more variations are intrinsically expected. Indeed, the measured expression values for each genes are expected to fluctuate more importantly, due to the combination of biological and technical factors: inter-individual variations in gene regulation, sample purity, cell-synchronization issues or reponses to environment (e.g. heat-shock).
+When working with biological replicates, more variations are intrinsically expected. Indeed, the measured expression values for each gene are expected to fluctuate more importantly, due to the combination of biological and technical factors: inter-individual variations in gene regulation, sample purity, cell-synchronization issues or responses to an environment (e.g. heat-shock).
 
 The Poisson distribution has only one parameter indicating its expected mean: λ. The variance of the distribution equals its mean λ. In most cases, the Poisson distribution is not expected to fit very well with the count distribution in biological replicates, since we expect some over-dispersion (greater variability) due to biological noise.
 
@@ -48,9 +54,9 @@ As a consequence, when working with RNA-Seq data, many of the current approaches
 
 * What is the negative binomial?
 
-The negative binomial distribution is a discrete distribution that give us the probability of observing x failures before a target number of succes n is obtained. As we will see later the negative binomial can also be used to model over-dispersed data (in this case this overdispersion is relative to the poisson model).
+The negative binomial distribution is a discrete distribution that gives us the probability of observing `x` failures before a target number of success `n` is obtained. As we will see later the negative binomial can also be used to model over-dispersed data (in this case this overdispersion is relative to the Poisson model).
 
-The probability of x failures before n success given a Bernouilli trial with a probability p of success is
+The probability of x failures before n success given a Bernoulli trial with a probability p of success is
 
 ![P_{negbin}(x;n,p) = \binom{x+n-1}{x}p^n(1-p)^x](https://latex.codecogs.com/gif.latex?P_{NegBin}(x;n,p)&space;=&space;\binom{x&plus;n-1}{x}p^n(1-p)^x)
 
@@ -79,7 +85,7 @@ arrows(x0=ev-sqrt(v), y0 = 0.04, x1=ev+sqrt(v), y1=0.04, col="brown",lwd=2, code
 ```
 
 #### Modelling read counts through a negative binomial
-To perform differential expression call, DESeq will assume that, for each gene, the read counts are generated by a negative binomial distribution. One problem here will be to estimate, for each gene, the two parameters of the negative binomial distribution: mean and dispersion. The parameter estimation is implemented in two steps: `estimateDispersions()` and negative bionomial Generalized Linear Model (GLM) fitting. Refer to [Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8) for the theory behind the DESeq2.
+To perform differential expression call, DESeq will assume that, for each gene, the read counts are generated by a negative binomial distribution. One problem here will be to estimate, for each gene, the two parameters of the negative binomial distribution: mean and dispersion. The parameter estimation is implemented in two steps: `estimateDispersions()` and negative binomial Generalized Linear Model (GLM) fitting. Refer to [Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8) for the theory behind the DESeq2.
 
 ```r
 ## Performing estimation of dispersion parameter
@@ -111,14 +117,14 @@ hist(res.DESeq2$padj, breaks=20, col="grey", main="DESeq2 p-value distribution",
 
 ### All in one with DESeq()
 * estimating size factors and dispersions
-* negative bionomial distribution model to fit
+* negative binomial distribution model to fit
 * wald test (Note that the function uses the estimated standard error of a log2 fold change (lfcSE) to test if it is equal to zero).
 
 Open DESeq2 report file or we will analyze this via heatmap below.
 
-### Hierachical Clustering
+### Hierarchical Clustering
 * Computes a distance between each pair of sample
-* Perform hierachical clustering
+* Perform hierarchical clustering
 
 ### PCA Plot
 Principal Component Analysis (PCA) is a method of dimensionality reduction/feature extraction that transforms the data from a d-dimensional space into a new coordinate system of dimension p, where p<=d.
@@ -130,11 +136,12 @@ Here, we use only two PCs.
 * Load log2(TPM2) file
 * Generate a heatmap from a log2(TPM2) counts only reported in the refined DESeq2 output table.
 
-Let us run the R script to generate all table and fiugres for DE analysis
+Let us run the R script to generate all table and figures for DE analysis
 ```bash
 Rscript ./runDESeq2FromFeatureCount2.r
 ```
 Check files in the output directory, `expr_output`
+You may need download these image files to your Windows laptop to view.
 
 ### Task 1
 We prepare another read count matrix file for you.

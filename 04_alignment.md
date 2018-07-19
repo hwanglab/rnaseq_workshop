@@ -1,7 +1,7 @@
 # Alignment
 
 ## HISAT2 alignment
-Both RNA-seq paired-end reads files and HISAT2 reference index are now available. Let us perform alignments with HISAT2 (a reference genome-based/splice-aware NGS short aligner) to the genome and transcriptome. RNA-seq BAM files can be very useful to many applications including genomic variants (e.g., RNA-editing), gene fusion, expression analysis, and discovery of *de novo* isoforms.  
+Both RNA-seq paired-end reads files and HISAT2 reference index are now available. Let us perform alignments with HISAT2 (a reference genome-based/splice-aware NGS short aligner) to the genome and transcriptome. RNA-seq BAM files can be very useful to many applications including genomic variants (e.g., RNA-editing), gene fusion, expression analysis, and discovery of *de novo* isoforms. 
 
 First, begin by making the appropriate output directory for our alignment results if not exist.
 
@@ -15,7 +15,7 @@ cd $RNA_ALIGN_DIR
 
 HISAT2 uses a graph-based alignment and has succeeded HISAT and TopHat2. The output of this step will be a SAM/BAM file for each data set.
 
-Refer to HISAT2 manual for a more detailed explanation:
+Refer to the HISAT2 manual for a more detailed explanation:
 
 * https://ccb.jhu.edu/software/hisat2/manual.shtml
 
@@ -30,7 +30,7 @@ Refer to HISAT2 manual for a more detailed explanation:
 Extra options specified below:
 
 * '-p 4' tells HISAT2 to use eight CPUs for bowtie alignments.
-* '--rna-strandness RF' specifies strandness of RNAseq library. We will specify RF since the TruSeq strand-specific library was used to make these libraries. See <a href="https://github.com/griffithlab/rnaseq_tutorial/blob/master/manuscript/supplementary_tables/supplementary_table_5.md">here</a> for options.
+* '--RNA-strandness RF' specifies strandness of RNAseq library. We will specify RF since the TruSeq strand-specific library was used to make these libraries. See <a href="https://github.com/griffithlab/rnaseq_tutorial/blob/master/manuscript/supplementary_tables/supplementary_table_5.md">here</a> for options.
 * '--rg-id $ID' specifies a read group ID that is a unique identifier.
 * '--rg SM:$SAMPLE_NAME' specifies a read group sample name. This together with rg-id will allow you to determine which reads came from which sample in the merged bam later on.
 * '--rg LB:$LIBRARY_NAME' specifies a read group library name. This together with rg-id will allow you to determine which reads came from which library in the merged bam later on.
@@ -56,7 +56,7 @@ hisat2 -p 4 --rg-id=HBR_Rep3 --rg SM:HBR --rg LB:HBR_Rep3_ERCC-Mix2 --rg PL:ILLU
 
 ```
 
-Note: in the above alignments, we are treating each library as an independent data set. If you had multiple lanes of data for a single library, you could align them all together in one HISAT2 command. Similarly you might combine technical replicates into a single alignment run (perhaps after examining them and removing outliers...). To combine multiple lanes, you would provide all the read1 files as a comma separated list for the '-1' input argument, and then all read2 files as a comma separated list for the '-2' input argument, (where both lists have the same order) :
+Note: in the above alignments, we are treating each library as an independent data set. If you had multiple lanes of data for a single library, you could align them all together in one HISAT2 command. Similarly, you might combine technical replicates into a single alignment run (perhaps after examining them and removing outliers...). To combine multiple lanes, you would provide all the read1 files as a comma-separated list for the '-1' input argument, and then all read2 files as a comma-separated list for the '-2' input argument, (where both lists have the same order) :
 You can also combine individual BAM files to merge a bam file. This is the approach we will take.
 
 ### HISAT2 Alignment Summary
@@ -65,7 +65,7 @@ HISAT2 generates a summary of the alignments printed to the terminal. Notice the
 
 ### Merge HISAT2 BAM files
 
-Make a single BAM file combining all UHR data and another for all HBR data. Note: This could be done in several ways such as 'samtools merge', 'bamtools merge', or using picard-tools (see below). We chose the third method because it did the best job at merging the bam header information. NOTE: sambamba also retains header info.
+Make a single BAM file combining all UHR data and another for all HBR data. Note: This could be done in several ways such as 'samtools merge', 'bamtools merge', or using picard-tools (see below). We chose the third method because it did the best job of merging the bam header information. NOTE: sambamba also retains header info.
 
 ```bash
 

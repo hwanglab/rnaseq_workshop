@@ -3,7 +3,7 @@ Use `htseq-count` to generate expression estimates from the SAM/BAM files genera
 
 ## HTSEQ-COUNT
 
-Run `htseq-count` on alignment files to produce raw counts for differential expression analysis in the next session. The program examins each read mapping coordinates to see if it comes from which gene. Three modes are available.
+Run `htseq-count` on alignment files to produce raw counts for differential expression analysis in the next session. The program examines each read mapping coordinates to see if it comes from which gene. Three modes are available.
 
 ![ercc_mix](images/count_modes.png)
 
@@ -25,7 +25,7 @@ Extra options specified below:
 * '--stranded' specifies whether data is stranded or not.  The TruSeq strand-specific RNA libraries suggest the 'reverse' option for this parameter.
 * '--minaqual' will skip all reads with alignment quality lower than the given minimum value
 * '--type' specifies the feature type (3rd column in GFF file) to be used. (default, suitable for RNA-Seq and Ensembl GTF files: **exon**)
-* '--idattr' The feature ID used to identity the counts in the output table. The default, suitable for RNA-SEq and Ensembl GTF files, is gene_id.
+* '--idattr' The feature ID used to identify the counts in the output table. The default, suitable for RNA-SEq and Ensembl GTF files, is gene_id.
 
 Run the script `$RNA_HOME/rnaseq/expression/htseq_counts/htseq_count.sh` to obtain gene-level counts:
 
@@ -53,7 +53,16 @@ echo "Check the htseq-count output file  ${HTSEQ_COUNT_DIR}/${bam_base}_gene.tsv
 ```
 
 ## Calculate gene lengths
-A longer gene likely receives more read counts whereas a shorter gene receives less reads. Since we use a parameter `--type exon` in the run which considers reads aligned within exonic regons, we count non-overlapped exonic base pairs for each gene before normalization.
+A longer gene likely receives more read counts whereas a shorter gene receives fewer reads. Since we use a parameter `--type exon` in the run which considers reads aligned within an exonic region, we count non-overlapped exonic base pairs for each gene before normalization.
+
+Let us launch rstudio
+```bash
+binf
+cd ref
+rstudio gene_id_len &
+```
+* Change font style so that cursor aligns with the font you are typing
+Tools > Global Options > Appearance > Editor font > Select 'Nimbus Mono L' 
 
 ```r
 library(data.table)
@@ -87,7 +96,7 @@ less chr22_with_ERCC92.gtf_len_by_gene.tsv
 ```
 
 ## Build a read count matrix from htseq-count output files
-Merge results files into a single matrix to use in DESeq2 in the next session. The following joins the results for each replicate together, adds a header, reformats the result as a tab delimited file, and shows you the first 10 lines of the resulting file :
+Merge results files into a single matrix to use in DESeq2 in the next session. The following step joins the results for each replicate together, adds a header, reformats the result as a tab-delimited file, and shows you the first 10 lines of the resulting file :
 
 ```bash
 
@@ -109,6 +118,7 @@ or you can run the following commands instead,
 ```bash
 rc
 bash ./build_read_count_matrix.sh
+head -n10 gene_read_counts_table_all_final.tsv
 ```
 
 ## Calculate TPM (transcript per millions) in log2 value
@@ -141,7 +151,7 @@ write.table(rc_tpm,file=log2tpm_file,quote=F,sep='\t',col.names=NA,row.names=T)
 ```
 Run the R script at $RNA_HOME/expression/htseq_counts,
 ```bash
-cd $RNA_HOME/expression/htseq_counts
+rc
 Rscript ./tpm_log2.r
 less -S gene_read_counts_table_all_final.tsv.log2tpm.tsv
 ```
@@ -149,17 +159,18 @@ less -S gene_read_counts_table_all_final.tsv.log2tpm.tsv
 ---
 ## ERCC expression analysis
 
-Based on the above read counts, plot the linearity of the ERCC spike-in read counts versus the known concentration of the ERCC spike-in Mix. In this step we will first prepare a file describing the expected concentrations and fold-change differences for the ERCC spike-in reagent. Next we will use a Perl script to organize the ERCC expected values and our observed counts for each ERCC sequence. Finally, we will use an R script to produce an x-y scatter plot that compares the expected and observed values. Run the following bash script `$RNA_HOME/expression/htseq_counts/qc_by_ercc.sh`,
+Based on the above read counts, plot the linearity of the ERCC spike-in read counts versus the known concentration of the ERCC spike-in Mix. In this step, we will first prepare a file describing the expected concentrations and fold-change differences for the ERCC spike-in reagent. Next, we will use a Perl script to organize the ERCC expected values and our observed counts for each ERCC sequence. Finally, we will use an R script to produce an x-y scatter plot that compares the expected and observed values. Run the following bash script `$RNA_HOME/expression/htseq_counts/qc_by_ercc.sh`,
 
 ```bash
 
-cd $RNA_HOME/expression/htseq_counts
+rc
 
 cat ERCC_Controls_Analysis.txt
 
 perl ./Tutorial_ERCC_expression.pl
 
-cat $RNA_HOME/expression/htseq_counts/ercc_read_counts.tsv #check output file
+#The columns (ID, Subgroup, Concentration) are from a vendor inventory information ERCC_Control_Analysis.txt file and two columns (Label, Count) are attached from our read count file (gene_read_counts_table_all_final.tsv)
+less ercc_read_counts.tsv
 
 Rscript ./Tutorial_ERCC_expression.R ercc_read_counts.tsv
 
@@ -167,7 +178,7 @@ Rscript ./Tutorial_ERCC_expression.R ercc_read_counts.tsv
 
 To view the resulting figure, open the PDF file, 
 ```bash
-xpdf Tutorial_ERCC_expression.pdf &
+evince Tutorial_ERCC_expression.pdf &
 ```
 
 Q6.1 What is the correlation coefficient?

@@ -1,5 +1,5 @@
 # Preparing RNA-seq analysis
-In this session, we learn what the requirement are before we start to do data analysis.
+In this session, we learn what the requirement is before we start to do data analysis.
 
 ## Definitions
 - Reference genome - The nucleotide sequence of the chromosomes of a species. Genes are the functional units of a reference genome and gene annotations describe the structure of transcripts expressed from those gene loci.
@@ -9,7 +9,7 @@ In this session, we learn what the requirement are before we start to do data an
 - GTF (.gtf) file - A common file format referred to as Gene Transfer Format used to store gene and transcript annotation information. You can learn more about this format here: http://genome.ucsc.edu/FAQ/FAQformat#format4
 
 ## Reference Genome
-Obtain a reference genome from Ensembl, iGenomes, NCBI or UCSC so that we can align RNA-seq reads to the genome sequence. In this example analysis we will use the human GRCh38 version of the genome from Ensembl. Furthermore, we are actually going to perform the analysis using only a single chromosome (chr22) and the ERCC spike-in to make it run faster...
+Obtain a reference genome from Ensembl, iGenomes, NCBI or UCSC so that we can align RNA-seq reads to the genome sequence. In this example analysis, we will use the human GRCh38 version of the genome from Ensembl. Furthermore, we are actually going to perform the analysis using only a single chromosome (chr22) and the ERCC spike-in to make it run faster...
 
 Q1.1 Change to $RNA_REFS_DIR to check if `chr22_with_ERCC92.fa`.
 
@@ -24,13 +24,13 @@ Q1.3 What is the significance of the upper and lower case characters?
 ## Annotation
 
 ### The purpose of gene annotation (GTF file)
-NGS reads are short (in general, Illumina sequencing platform) and RNA-seq reads are most likely originated from known gene locus. Thus, during the HISAT2 index creation step, the annotations may be provided to create local indexes to represent transcripts as well as a global index for the entire reference genome. This allows for faster mapping and better mapping across exon boundaries and splice sites. If an alignment still can not be found it will attempt to determine if the read corresponds to a novel exon-exon junction.
+NGS reads are short (in general, Illumina sequencing platform) and RNA-seq reads are most likely originated from known gene locus. Thus, during the HISAT2 index creation step, the annotations may be provided to create local indexes to represent transcripts as well as a global index for the entire reference genome. This allows for faster mapping and better mapping across exon boundaries and splice sites. If an alignment still cannot be found it will attempt to determine if the read corresponds to a novel exon-exon junction.
 
 ![align_to_splice_out_ref](images/te-203-9.png)
 
 ### View a preprocessed GTF file
 
-In general, two gene prediction models are available; RefSeq and Ensembl/GENCODE. RefSeq is more conservative and mostly used in clinical settings whereas Ensembl is more inclusive and widely used in research settings. In this tutorial we will use annotations obtained from Ensembl (Homo_sapiens.GRCh38.86.gtf.gz) for chromosome 22 only. But, you should get familiar with sources of complete gene annotations for RNA-seq analysis.
+In general, two gene prediction models are available; RefSeq and Ensembl/GENCODE. RefSeq is more conservative and mostly used in clinical settings whereas Ensembl is more inclusive and widely used in research settings. In this tutorial, we will use annotations obtained from Ensembl (Homo_sapiens.GRCh38.86.gtf.gz) for chromosome 22 only. But, you should get familiar with sources of complete gene annotations for RNA-seq analysis.
 
 Take a look at the contents of the gtf file ($RNA_REF_GTF). Press 'q' to exit the 'less' display.
 
@@ -57,14 +57,14 @@ perl -ne 'if ($_ =~ /(gene_id\s\"ENSG\w+\")/){print "$1\n"}' $RNA_REF_GTF | sort
 Q1.5 List out all transcript IDs included in the GTF file.
 
 ### Open GTF file in IGV
-IGV will be discussed in the RNA-seq alignment session. IGV also suppors GTF file format. Run IGV and load the gtf file,
+IGV will be discussed in the RNA-seq alignment session. IGV also supports GTF file format. Run IGV and load the gtf file,
 ```bash
 igv.sh &
 change to hg38
 File > Load from file
 Select chr22_with_ERCC92.gtf and Open
-Go to chr22
 Click right mouse button in the gtf pannel and select 'Expanded'
+Type "MIOX" in the search box
 ```
 
 ## Resources
@@ -82,17 +82,17 @@ There are many possible sources of .gtf gene/transcript annotation files. For ex
 Based on Ensembl annotations only. Available for many species. http://useast.ensembl.org/info/data/ftp/index.html
 
 #### UCSC TABLE BROWSER
-Based on UCSC annotations or several other possible annotation sources collected by UCSC. You might chose this option if you want to have a lot of flexibility in the annotations you obtain. e.g. to grab only the transcripts from chromosome 22 as in the following example:
+Based on UCSC annotations or several other possible annotation sources collected by UCSC. You might choose this option if you want to have a lot of flexibility in the annotations you obtain. e.g. to grab only the transcripts from chromosome 22 as in the following example:
 
 - Open the following in your browser: http://genome.ucsc.edu/
 
 - Select 'Tools' and then 'Table Browser' at the top of the page.
-- Select 'Mammal', 'Human', and 'Dec. 2013 (GRCh38/hg38)' from the first row of drop down menus.
-- Select 'Genes and Gene Predictions' and 'GENCODE v24' from the second row of drop down menus. To limit your selection to only chromosome 22, select the 'position' option beside 'region', enter 'chr22' in the 'position' box.
+- Select 'Mammal', 'Human', and 'Dec. 2013 (GRCh38/hg38)' from the first row of drop-down menus.
+- Select 'Genes and Gene Predictions' and 'GENCODE v24' from the second row of drop-down menus. To limit your selection to only chromosome 22, select the 'position' option beside 'region', enter 'chr22' in the 'position' box.
 - Select 'GTF - gene transfer format' for output format and enter 'UCSC_Genes.gtf' for output file.
 - Hit the 'get output' button and save the file. Make note of its location
 
-In addition to the .gtf file you may find uses for some extra files providing alternatively formatted or additional information on the same transcripts. For example: How to get a Gene bed file:
+In addition to the .gtf file, you may find uses for some extra files providing alternatively formatted or additional information on the same transcripts. For example: How to get a Gene bed file:
 
 - Change the output format to 'BED - browser extensible data'.
 - Change the output file to 'UCSC_Genes.bed', and hit the 'get output' button.
@@ -112,6 +112,6 @@ How to get gene symbols and descriptions for all UCSC genes:
 - Under 'hg38.kgXref fields' select: 'kgID', 'geneSymbol', 'description'.
 - Hit the 'get output' button and save the file.
 
-To get annotations for the whole genome, make sure 'genome' is selected beside 'region'. By default, the files downloaded above will be compressed. To decompress, use 'gunzip filename' in linux.
+To get annotations for the whole genome, make sure 'genome' is selected beside 'region'. By default, the files downloaded above will be compressed. To decompress, use 'gunzip filename' in Linux.
 
  
