@@ -13,7 +13,7 @@ https://www.thermofisher.com/order/catalog/product/4456740
 ## Two triplicates
 We have 3 complete experimental replicates for each sample. This allows us to assess the technical variability of our overall process of producing RNA-seq data in the lab.
 
-For all libraries, we prepared low-throughput (Set A) [TruSeq Stranded Total RNA Sample Prep Kit](http://products.illumina.com/products/truseq_stranded_total_rna_sample_prep_kit.html) libraries with Ribo-Zero Gold to remove both cytoplasmic and mitochondrial rRNA.
+For all libraries, we prepared low-throughput [TruSeq Stranded Total RNA Sample Prep Kit](http://products.illumina.com/products/truseq_stranded_total_rna_sample_prep_kit.html) libraries with Ribo-Zero Gold to remove both cytoplasmic and mitochondrial rRNA.
 
 Triplicate, indexed libraries were made starting with 100ng Agilent/Stratagene Universal Human Reference total RNA and 100ng Ambion Human Brain Reference total RNA. The Universal Human Reference replicates received 2 ul of 1:1000 ERCC Mix 1. The Human Brain Reference replicates received 1:1000 ERCC Mix 2. The libraries were quantified with KAPA Library Quantification qPCR and adjusted to the appropriate concentration for sequencing. The triplicate, indexed libraries were then pooled prior to sequencing. Each pool of three replicate libraries was sequenced across 2 lanes of a HiSeq 2000 using paired-end sequence chemistry with 100bp read lengths.
 
