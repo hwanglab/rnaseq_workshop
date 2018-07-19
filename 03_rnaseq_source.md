@@ -73,9 +73,6 @@ Run the following bash shell script (trim_galore.sh) and run it.
 ```bash
 #!/bin/bash -l
 
-# module load trim_galore/0.4.4 # make trim_galore available in path
-# module load FastQC/0.11.5
-
 cd $RNA_DATA_DIR # change to RNA-seq read directory
 
 for read_base in `ls *read1.fastq.gz | rev | cut -c 11- | rev | uniq` # list base file names to process

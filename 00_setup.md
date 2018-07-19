@@ -15,6 +15,8 @@
 1. Session > New session > SSH
 1. Type Linux server IP address assigned to you, username
 1. Make sure that Forwarding X11 is checked in Advanced setting
+1. Double clicking the session to connect
+1. A prompt appears for password. Simply type your password and hit enter. 
 
 ![em](images/mobaxterm0.png)
 ![em](images/mobaxterm1.png)
@@ -27,6 +29,10 @@
   10.66.64.39
   10.66.64.40
   ```
+For MacOS user, you need to install XQuartz (https://www.xquartz.org/). Then launch XQuartz terminal and then connect to server
+```bash
+ssh -Y <username>@<Linux_server_IP_address>
+```
 
 ## Required programs in Linux
 The program should be in the path!
