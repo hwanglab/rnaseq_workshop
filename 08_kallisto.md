@@ -1,12 +1,12 @@
 # Alignment Free Expression Estimation (Kallisto)
 In this session, we would like to quantify **transcript**-level expression analysis using Kallisto. For more information on Kallisto, refer to the <a href="https://pachterlab.github.io/kallisto/about.html">Kallisto project page</a> and <a href="https://pachterlab.github.io/kallisto/manual.html">Kallisto manual page</a>.
 
-## Obtain transcript sequences in fasta format
-Note that we already have fasta sequences for the reference genome sequence from earlier in the RNA-seq tutorial. However, Kallisto works directly on target *cDNA/transcript* sequences. Remember also that we have transcript models for genes on chromosome 22. These transcript models were downloaded from Ensembl in GTF format. This GTF contains a description of the coordinates of exons that make up each transcript but it does not contain the transcript sequences themselves. So currently we do not have transcript sequences needed by Kallisto. There are many places we could obtain these transcript sequences. For example, we could download them directly in Fasta format from the <a href="http://www.ensembl.org/info/data/ftp/index.html">Ensembl FTP site</a>.
+## Obtain transcript sequences in FASTA format
+Note that we already have FASTA sequences for the reference genome sequence from earlier in the RNA-seq tutorial. However, Kallisto works directly on target *cDNA/transcript* sequences. Remember also that we have transcript models for genes on chromosome 22. These transcript models were downloaded from Ensembl in GTF format. This GTF contains a description of the coordinates of exons that make up each transcript but it does not contain the transcript sequences themselves. So currently we do not have transcript sequences needed by Kallisto. There are many places we could obtain these transcript sequences. For example, we could download them directly in Fasta format from the <a href="http://www.ensembl.org/info/data/ftp/index.html">Ensembl FTP site</a>.
 
 To allow us to compare Kallisto results to expression results from DESeq2, we will create a custom Fasta file that corresponds to the transcripts we used for the DESeq2 analysis. How can we obtain these transcript sequences in Fasta format?
 
-We will use a script `gtf_to_fasta` from `tophat` package to generate a fasta sequence from our GTF file. This approach is convenient because it will also include the sequences for the ERCC spike in controls, allowing us to generate Kallisto abundance estimates for those features as well.
+We will use a script `gtf_to_fasta` from `tophat` package to generate a FASTA sequence from our GTF file. This approach is convenient because it will also include the sequences for the ERCC spike in controls, allowing us to generate Kallisto abundance estimates for those features as well.
 
 ```bash
 
@@ -17,7 +17,7 @@ cd $RNA_HOME/refs
 
 Use `less` to view the output file `chr22_ERCC92_transcripts.fa`. Each genomic sequence is a transcript after intronic regions are spliced out and exonic regions are only combined together. Each gene has many isoforms.
 
-Note that this file has messy transcript names. Use the following hairball perl one-liner to tidy up the header line for each fasta sequence
+Note that this file has messy transcript names. Use the following hairball perl one-liner to tidy up the header line for each FASTA sequence
 
 ```bash
 
@@ -27,7 +27,7 @@ wc -l chr22_ERCC92_transcripts*.fa
 
 ```
 
-View the resulting 'clean' file using `less chr22_ERCC92_transcripts.clean.fa`. View the end of this file use `tail chr22_ERCC92_transcripts.clean.fa`. Note that we have one fasta record for each Ensembl transcript on chromosome 22 and we have an additional fasta record for each ERCC spike-in sequence.
+View the resulting 'clean' file using `less chr22_ERCC92_transcripts.clean.fa`. View the end of this file use `tail chr22_ERCC92_transcripts.clean.fa`. Note that we have one fasta record for each Ensembl transcript on chromosome 22 and we have an additional FASTA record for each ERCC spike-in sequence.
 
 Create a list of all transcript IDs for later use:
 
@@ -72,7 +72,7 @@ kallisto quant --index=$RNA_HOME/refs/kallisto/chr22_ERCC92_transcripts_kallisto
 
 ### Expectation-maximization algorithm to model transcript quantification used in kallisto
 
-The principle of EM is nicely illustrated by Lior Pachter in his transcript quantification review. Suppose, as shown on the image below, there are three transcripts (green, red, and blue). There are five reads associated with these transcripts. One read (d) is unique to the red transcript, while others correspond to two (b, c, e) or three (a) transcripts. The EM is an iterative procedure. In the first round transcript abundances are initialized as equal (0.33 each as there are three transcripts) and, during expectation, reads are apportioned across transcripts based on these abundances. Next, during maximization step, transcript abundances are re-calculated as follow. For red transcript we sum up fraction of each read as 0.33 + 0 + 0.5 + 1 + 0.5 for reads a, b, c, d, and e, respectively. We now divide this by the sum of read allocations for each transcript as 2.33 + 1.33 + 1.33 for red, green, and blue transcripts respectively.
+The principle of EM is nicely illustrated by Lior Pachter in his transcript quantification review. Suppose, as shown on the image below, there are three transcripts (green, red, and blue). There are five reads associated with these transcripts. One read (d) is unique to the red transcript, while others correspond to two (b, c, e) or three (a) transcripts. The EM is an iterative procedure. In the first round transcript abundances are initialized as equal (0.33 each as there are three transcripts) and, during expectation, reads are apportioned across transcripts based on these abundances. Next, during the maximization step, transcript abundances are re-calculated as follow. For red transcript we sum up fraction of each read as 0.33 + 0 + 0.5 + 1 + 0.5 for reads a, b, c, d, and e, respectively. We now divide this by the sum of read allocations for each transcript as 2.33 + 1.33 + 1.33 for red, green, and blue transcripts respectively.
 
 For all three transcript calculation will look like this:
 - red transcript normalized abundance = 2.33/4.99 = 0.47
@@ -107,7 +107,7 @@ tail transcript_tpms_all_samples.tsv
 ```
 
 ## Create a custom transcriptome database to examine a specific set of genes
-For example, suppose we just want to quickly assess the presence of ribosomal RNA genes only. We can obtain these genes from an Ensembl GTF file. In the example below we will use our chromosome 22 GTF file for demonstration purposes. But in a 'real world' experiment you would use a GTF for all chromosomes. Once we have found GTF records for ribosomal RNA genes, we will create a fasta file that contains the sequences for these transcripts, and then index this sequence database for use with Kallisto.
+For example, suppose we just want to quickly assess the presence of ribosomal RNA genes only. We can obtain these genes from an Ensembl GTF file. In the example below, we will use our chromosome 22 GTF file for demonstration purposes. But in a 'real world' experiment you would use a GTF for all chromosomes. Once we have found GTF records for ribosomal RNA genes, we will create a FASTA file that contains the sequences for these transcripts, and then index this sequence database for use with Kallisto.
 
 ```bash
 
@@ -125,7 +125,7 @@ kallisto index --index=chr22_rRNA_transcripts_kallisto_index ../chr22_rRNA_trans
 We can now use this index with Kallisto to assess the abundance of rRNA genes in a set of samples.
 
 ## Optional - Perform DE analysis of Kallisto expression estimates using Sleuth
-We will now use Sleuth perform a differential expression analysis on the full chr22 data set produced above. Sleuth is a companion tool that starts with the output of Kallisto, performs DE analysis, and helps you visualize the results. 
+We will now use Sleuth perform a differential expression analysis on the full chr22 dataset produced above. Sleuth is a companion tool that starts with the output of Kallisto, performs DE analysis, and helps you visualize the results. 
 
 Regenerate the Kallisto results using the HDF5 format and 100 rounds of bootstrapping (both required for Sleuth to work).
 
@@ -215,7 +215,7 @@ We can compare the expression value for each Ensembl transcript from chromosome 
 
 To do this comparison, we need to gather the expression estimates for each of our replicates from each approach. The Kallisto transcript results were neatly organized into a single file above. For Kallisto gene expression estimates, we will simply sum the TPM values for transcripts of the same gene. Though it is 'apples-to-oranges', we can also compare Kallisto expression estimates to the raw read counts from HtSeq-Count (but only at the gene level in this case). The following R script will pull together the various expression matrix files we created in previous steps and create some visualizations to compare them in the gene level.
 
-First create the gene version of the Kallisto TPM matrix
+First, create the gene version of the Kallisto TPM matrix
 
 ```bash
 
