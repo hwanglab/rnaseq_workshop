@@ -8,3 +8,6 @@ For those of you registered for this workshop, we have already created a Linux a
 
 
 Brought to you by the Dr. Hwang lab in Department of Quantitative Health Science, LRI, Cleveland Clinic
+
+#### Click Here To Start:
+[Setup Workspace](00_setup.md)
