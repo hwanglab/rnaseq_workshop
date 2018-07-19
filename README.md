@@ -16,6 +16,18 @@ For those of you registered for this workshop, we have already created a Linux a
 1. [Differential Expression](07_deseq2_visualization.md)
 1. [Kallisto](08_kallisto.md)
 
+### Common Linux Commands:
+General syntax:
+`<command> -<option> <input1>`
+
+- pwd - Print Working Directory 
+- ls - List items in directory
+- cd - Change directory
+- mkdir - Make Directory
+- export - Set environment variable
+- echo - Print contents of variable
+- tar - Compress or Extract files
+
 ---------
 Brought to you by the Dr. Hwang lab in Department of Quantitative Health Science, LRI, Cleveland Clinic
 
