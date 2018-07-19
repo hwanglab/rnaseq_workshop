@@ -24,7 +24,9 @@ You will be assigned one of the following IP Addresses:
 
 ### For MacOS Users:
 1. Install [XQuartz](https://www.xquartz.org/).
-2. Launch XQuartz terminal to connect to a server.
+1. Launch XQuartz
+1. From the menu bar, go to `Applications` > `terminal` to connect to a server.
+1. Enter:
 ```bash
 ssh -Y <username>@<Linux_server_IP_address>
 ```
