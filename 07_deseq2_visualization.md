@@ -140,8 +140,13 @@ Let us run the R script to generate all table and figures for DE analysis
 ```bash
 Rscript ./runDESeq2FromFeatureCount2.r
 ```
-Check files in the output directory, `expr_output`
-You may need download these image files to your Windows laptop to view.
+
+Open an image files in the output directory, `expr_output`
+```bash
+rc
+cd expr_output
+magick display <image_file> &
+```
 
 ### Task 1
 We prepare another read count matrix file for you.

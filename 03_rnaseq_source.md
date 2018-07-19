@@ -14,9 +14,9 @@ There are two 'mixes' of these transcripts to allow an assessment of differentia
 ## Protocol
 We have 3 complete experimental replicates for each sample. This allows us to assess the technical variability of our overall process of producing RNA-seq data in the lab.
 
-For all libraries were prepared with the low-throughput protocol from [TruSeq Stranded Total RNA Sample Prep Kit](https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits/truseq-stranded-total-rna.html) with Ribo-Zero Gold to remove both cytoplasmic and mitochondrial rRNA.
+All libraries were prepared with the low-throughput protocol from [TruSeq Stranded Total RNA Sample Prep Kit](https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits/truseq-stranded-total-rna.html) with Ribo-Zero Gold to remove both cytoplasmic and mitochondrial rRNA.
 
-Triplicate, indexed libraries were made starting with:
+Triplicate, indexed libraries were made in the following manner:
 
 Universal Human Reference (UHR) | Human Brain Reference (HBR)
 ------------|--------------
@@ -81,9 +81,6 @@ Run the following bash shell script (`trim_galore.sh`).
 
 ```bash
 #!/bin/bash -l
-
-# module load trim_galore/0.4.4 # make trim_galore available in path
-# module load FastQC/0.11.5
 
 cd $RNA_DATA_DIR # change to RNA-seq read directory
 

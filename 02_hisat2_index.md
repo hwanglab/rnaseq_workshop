@@ -6,7 +6,7 @@ Create a HISAT2 index for chr22 and the ERCC spike-in sequences. HISAT2 can inco
 
 To learn more about how the HISAT2 indexing strategy is distinct from other NGS aligners, refer to the [HISAT publication](https://www.ncbi.nlm.nih.gov/pubmed/25751142).
 
-Run the following commands. A bash script file  is also available `$RNA_REFS_DIR/hisat2_index.sh`.
+Run the following commands. A bash script file  is also available: `$RNA_REFS_DIR/hisat2_index.sh`.
 
 ```bash
 cd $RNA_REFS_DIR

@@ -2,6 +2,13 @@
 
 ## SSH client
 
+You will be assigned one of the following IP Addresses:
+1. 10.66.64.37
+1. 10.66.64.38
+1. 10.66.64.39
+1. 10.66.64.40
+
+### For Windows Users:
 1. Download [MobaXterm](https://download.mobatek.net/1082018070240950/MobaXterm_Portable_v10.8.zip)
 1. Extract the zip file to ```C:\users\<user_name>\Downloads```
 1. Go to: ```MobaXterm_Portable_v10.8```
@@ -9,19 +16,18 @@
  * ![em](images/mobaxterm0.png)
 1. Launch MobaXterm
 1. Go to: ```Session > New session > SSH```
- *
-![em](images/mobaxterm1.png)
+ * ![em](images/mobaxterm1.png)
 1. Type the *Linux server IP address* assigned to you and your *username*
 1. Make sure that Forwarding X11 is checked in Advanced setting
- * ![em](images/mobaxterm3.png)
+1. Double clicking the session to connect
+1. A prompt appears for password. Simply type your password and hit enter.
 
-
-#### HPC host names/ip address
-You will be assigned one of the following IP Addresses:
-1. 10.66.64.37
-1. 10.66.64.38
-1. 10.66.64.39
-1. 10.66.64.40
+### For MacOS Users:
+1. Install [XQuartz](https://www.xquartz.org/).
+2. Launch XQuartz terminal to connect to a server.
+```bash
+ssh -Y <username>@<Linux_server_IP_address>
+```
 
 ## Required programs in Linux
 Once in Linux, the following programs should be in the `$PATH` environment variable:
