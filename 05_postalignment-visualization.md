@@ -48,4 +48,4 @@ Try to find a variant position in the RNAseq data:
 - http://software.broadinstitute.org/software/igv/book/export/html
 
 ### Up next
-[Expression](05_postalignment-visualization.md)
+[Expression](06_expression.md)
