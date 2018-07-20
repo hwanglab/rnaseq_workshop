@@ -33,3 +33,11 @@ Brought to you by the Dr. Hwang lab in Department of Quantitative Health Science
 
 #### Click Here To Start:
 [Setup Workspace](00_setup.md)
+
+----------
+
+Once you have finished the workshop, please fill out this review survey:
+
+http://survey.clevelandclinic.org/TakeSurvey.aspx?PageNumber=1&SurveyID=96L0no3MK&Preview=true
+
+We appreciate your feedback!
