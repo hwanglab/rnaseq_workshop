@@ -22,7 +22,10 @@ Note that this file has messy transcript names. Use the following hairball perl 
 ```bash
 
 cd $RNA_HOME/refs
-cat chr22_ERCC92_transcripts.fa | perl -ne 'if ($_ =~/^\>\d+\s+\w+\s+(ERCC\S+)[\+\-]/){print ">$1\n"}elsif($_ =~ /\d+\s+(ENST\d+)/){print ">$1\n"}else{print $_}' > chr22_ERCC92_transcripts.clean.fa
+cat chr22_ERCC92_transcripts.fa | \
+perl -ne 'if ($_ =~/^\>\d+\s+\w+\s+(ERCC\S+)[\+\-]/){print ">$1\n"}elsif($_ =~ /\d+\s+(ENST\d+)/){print ">$1\n"}else{print $_}' \
+> chr22_ERCC92_transcripts.clean.fa
+
 wc -l chr22_ERCC92_transcripts*.fa
 
 ```
@@ -34,7 +37,12 @@ Create a list of all transcript IDs for later use:
 ```bash
 
 cd $RNA_HOME/refs
-cat chr22_ERCC92_transcripts.clean.fa | grep ">" | perl -ne '$_ =~ s/\>//; print $_' | sort | uniq > transcript_id_list.txt
+cat chr22_ERCC92_transcripts.clean.fa | \
+	grep ">" | \
+	perl -ne '$_ =~ s/\>//; print $_' | \
+	sort | \
+	uniq > \
+	transcript_id_list.txt
 
 ```
 
@@ -157,12 +165,7 @@ biocLite("remotes")
 biocLite("pachterlab/sleuth")
 library(sleuth) #check if the module wa installed successfully 
 ```  
-
-Suppose we want to quickly assess one gene (e.g., *SYNGR1-203*/ENST00000328933) only. Search rRNA in our GTF file.
-
-```bash
-grep rRNA $RNA_REF_GTF | less -S
-```
+We would like perform PCA analysis and additionally estimate the expressions on one gene (e.g., *SYNGR1-203*/ENST00000328933).
 
 Copy a sleuth R script and perform a differential expression analysis on the RNA transcript.
 
