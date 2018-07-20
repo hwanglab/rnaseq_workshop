@@ -158,7 +158,7 @@ or you can run the bash script instead and display the first 10 lines of the mer
 ```bash
 rc
 bash ./build_read_count_matrix.sh
-head -n10 gene_read_counts_table_all_final.tsv
+head -n 10 gene_read_counts_table_all_final.tsv
 ```
 
 ## Calculate TPM (transcript per millions) in log2 value
