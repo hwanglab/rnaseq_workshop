@@ -26,7 +26,7 @@ library(apeglm) #check if the module wa installed successfully
 ```  
 
 ### Preparing DESeq2 input
-* Read the count matrix,
+* Read the **raw** count matrix we generated from the previous session,
 * Assign which sample belongs to which group, and
 * Retain only genes where half of the samples have at least 10 reads,
 

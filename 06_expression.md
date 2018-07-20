@@ -27,8 +27,6 @@ Extra options specified below:
 * '--type' specifies the feature type (3rd column in GFF file) to be used. (default, suitable for RNA-Seq and Ensembl GTF files: **exon**)
 * '--idattr' The feature ID used to identify the counts in the output table. The default, suitable for RNA-SEq and Ensembl GTF files, is gene_id.
 
-Run the script `$RNA_HOME/rnaseq/expression/htseq_counts/htseq_count.sh` to obtain gene-level counts:
-
 ```bash
 
 #!/bin/bash -l
@@ -61,6 +59,13 @@ echo "Check the htseq-count output file  ${HTSEQ_COUNT_DIR}/${bam_base}_gene.tsv
 
 ```
 
+Run the bash script above to generate a gene-level read count file,
+
+```bash
+binf
+bash ./htseq_count.sh
+```
+
 ## Calculate gene lengths
 A longer gene likely receives more read counts whereas a shorter gene receives fewer reads. Since we use a parameter `--type exon` in the run which considers reads aligned within an exonic region, we count non-overlapped exonic base pairs for each gene before normalization.
 
@@ -70,8 +75,9 @@ binf
 cd ref
 rstudio gene_id_len.r &
 ```
-* Change font style so that cursor aligns with the font you are typing
-Tools > Global Options > Appearance > Editor font > Select 'Nimbus Mono L' 
+* Change font style so that cursor aligns with what you are typing in the editor or console. From the rstudio menu,
+
+	Tools > Global Options > Appearance > Editor font > Select 'Nimbus Mono L' 
 
 ```r
 library(data.table)
@@ -102,12 +108,24 @@ fwrite(gtf_dt,file='chr22_with_ERCC92.gtf_len_by_gene.tsv',
 	quote=FALSE,sep='\t',col.names=FALSE)
 ``` 
 
-Run the R script at `$RNA_REFS_DIR`,
+Move your cursor on the first line and hold 'Ctrl' and hit enter to run the line.
+
+In order to run more than one lines, highlight the lines you want to run, and then hold 'Ctrl' and hit enter.
+
+In order to run the entire lines in the script, 
+
+click 'Code' > 'Source' from menu or 'Ctrl+Shift+5' to run the R script from rstudio
+  
+or,
+
+From ssh terminal, run the R script above at `$RNA_REFS_DIR` ,
+
 ```bash
 cd $RNA_REFS_DIR
 Rscript ./gene_id_len.r
-less chr22_with_ERCC92.gtf_len_by_gene.tsv
 ```
+
+Check the output file, `chr22_with_ERCC92.gtf_len_by_gene.tsv`
 
 ## Build a read count matrix from htseq-count output files
 Merge results files into a single matrix to use in DESeq2 in the next session. The following step joins the results for each replicate together, adds a header, reformats the result as a tab-delimited file, and shows you the first 10 lines of the resulting file :
@@ -137,7 +155,7 @@ head gene_read_counts_table_all_final.tsv
 
 ```
 
-or you can run the following commands instead,
+Let's run the script above and see the first 10 lines of the merged read count file,
 ```bash
 rc
 bash ./build_read_count_matrix.sh
@@ -189,7 +207,7 @@ Based on the above read counts, plot the linearity of the ERCC spike-in read cou
 
 rc
 
-cat ERCC_Controls_Analysis.txt
+less ERCC_Controls_Analysis.txt
 
 perl ./Tutorial_ERCC_expression.pl
 
@@ -197,6 +215,7 @@ perl ./Tutorial_ERCC_expression.pl
 # information ERCC_Control_Analysis.txt file and 
 # two columns (Label, Count) are attached from our read count file 
 # (gene_read_counts_table_all_final.tsv)
+
 less ercc_read_counts.tsv
 
 Rscript ./Tutorial_ERCC_expression.R ercc_read_counts.tsv
