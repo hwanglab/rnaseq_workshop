@@ -26,7 +26,7 @@ library(apeglm) #check if the module wa installed successfully
 ```  
 
 ### Preparing DESeq2 input
-* Read the count matrix,
+* Read the **raw** count matrix we generated from the previous session,
 * Assign which sample belongs to which group, and
 * Retain only genes where half of the samples have at least 10 reads,
 
@@ -150,9 +150,10 @@ magick display <image_file> &
 
 ### Task 1
 We prepare another read count matrix file for you.
-1. Extract `/mnt/isilon/data/w_QHS/hwangt-share/Datasets/Informatics_workshop/rnaseq/test_data_for_DESeq2.tar.gz` into your project directory
-1. Summarize read count matrix on the features
-1. Repeat the same analysis done above
+1. Extract `/Informatics_workshop/rnaseq/test_data_for_DESeq2.tar.gz` into your project directory
+1. Summarize read count matrix on the features (Note that `TCGA_BLCA_design.txt` is a design file and `TCGA_BLCA_sampled.tsv` is a read count matrix).
+1. Modify `runDESeq2FromFeatureCount2.r` so that it works with the new input files.
+	1. It does not have a gene length column and ignore plotting a heat map with TPM that requires gene lengths
 1. Compare the results (table and figures) with the one in your project directory like `~/projects/test_data_for_DESeq2/DESeq2_results`
  
 ### Task 2
