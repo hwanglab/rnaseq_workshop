@@ -68,7 +68,7 @@ A longer gene likely receives more read counts whereas a shorter gene receives f
 Let us launch Rstudio
 ```bash
 binf
-cd ref
+cd refs/
 rstudio gene_id_len.r &
 ```
 
