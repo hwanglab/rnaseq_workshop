@@ -43,7 +43,16 @@ for bam_base in `ls *_Rep?.bam | rev | cut -c 5- | rev`
 do
         echo "running htseq-count on $bam_base ..."
         
-        htseq-count --format bam --order pos --mode intersection-strict --stranded reverse --minaqual 1 --type exon --idattr gene_id ${bam_base}.bam $RNA_REF_GTF > ${HTSEQ_COUNT_DIR}/${bam_base}_gene.tsv
+        htseq-count \
+          --format bam \
+          --order pos \
+          --mode intersection-strict \
+          --stranded reverse \
+          --minaqual 1 \
+          --type exon \
+          --idattr gene_id \
+          ${bam_base}.bam $RNA_REF_GTF \
+          > ${HTSEQ_COUNT_DIR}/${bam_base}_gene.tsv
 
         echo "Done."
 done
@@ -59,7 +68,7 @@ Let us launch rstudio
 ```bash
 binf
 cd ref
-rstudio gene_id_len &
+rstudio gene_id_len.r &
 ```
 * Change font style so that cursor aligns with the font you are typing
 Tools > Global Options > Appearance > Editor font > Select 'Nimbus Mono L' 
@@ -73,7 +82,11 @@ gtf <- readGtf(gtf_file='chr22_with_ERCC92.gtf')
 
 #convert to GRanges object for better BED operation 
 library(GenomicRanges)
-gtf_gr <- GRanges(seqnames=gtf$chr,ranges=IRanges(gtf$start,gtf$end),strand=gtf$strand,gene_name=gtf$gene_name,gene_id=gtf$gene_id)
+gtf_gr <- GRanges(seqnames=gtf$chr,
+	ranges=IRanges(gtf$start,gtf$end),
+	strand=gtf$strand,
+	gene_name=gtf$gene_name,
+	gene_id=gtf$gene_id)
 
 #collapse all overlapped exons to make genomic regions not overlapped
 red_gr <- unlist(reduce(split(gtf_gr, elementMetadata(gtf_gr)$gene_id)))
@@ -85,7 +98,8 @@ gtf_dt <- data.table(gene_id=names(ranges(red_gr)),width=width(red_gr))
 gtf_dt <- gtf_dt[,sum(width),by=gene_id]
 
 #print out the table to a tab delimited file
-fwrite(gtf_dt,file='chr22_with_ERCC92.gtf_len_by_gene.tsv',quote=FALSE,sep='\t',col.names=FALSE)
+fwrite(gtf_dt,file='chr22_with_ERCC92.gtf_len_by_gene.tsv',
+	quote=FALSE,sep='\t',col.names=FALSE)
 ``` 
 
 Run the R script at `$RNA_REFS_DIR`,
@@ -102,11 +116,20 @@ Merge results files into a single matrix to use in DESeq2 in the next session. T
 
 cd $RNA_HOME/expression/htseq_counts
 
-join UHR_Rep1_gene.tsv UHR_Rep2_gene.tsv | join - UHR_Rep3_gene.tsv | join - HBR_Rep1_gene.tsv | join - HBR_Rep2_gene.tsv | join - HBR_Rep3_gene.tsv | join - $RNA_HOME/refs/chr22_with_ERCC92.gtf_len_by_gene.tsv > gene_read_counts_table_all.tsv
+join UHR_Rep1_gene.tsv UHR_Rep2_gene.tsv | \
+	join - UHR_Rep3_gene.tsv | \
+	join - HBR_Rep1_gene.tsv | \
+	join - HBR_Rep2_gene.tsv | \
+	join - HBR_Rep3_gene.tsv | \
+	join - $RNA_HOME/refs/chr22_with_ERCC92.gtf_len_by_gene.tsv > \
+	 gene_read_counts_table_all.tsv
 
 echo "GeneID UHR_Rep1 UHR_Rep2 UHR_Rep3 HBR_Rep1 HBR_Rep2 HBR_Rep3 gene_length" > header.txt
 
-cat header.txt gene_read_counts_table_all.tsv | grep -v "__" | perl -ne 'chomp $_; $_ =~ s/\s+/\t/g; print "$_\n"' > gene_read_counts_table_all_final.tsv
+cat header.txt gene_read_counts_table_all.tsv | \
+	grep -v "__" | \
+	perl -ne 'chomp $_; $_ =~ s/\s+/\t/g; print "$_\n"' > \
+	gene_read_counts_table_all_final.tsv
 
 rm -f gene_read_counts_table_all.tsv header.txt
 
@@ -122,7 +145,7 @@ head -n10 gene_read_counts_table_all_final.tsv
 ```
 
 ## Calculate TPM (transcript per millions) in log2 value
-By normalizing the read count matrix where sequencing depth in library varies, we would like to highlight which genes are expressed than the others within a sample.
+By normalizing the read count matrix where sequencing depth in library varies, we would like to highlight which genes are expressed than the others **within a sample**.
 
 Let K<sub>i</sub> be the number of reads align to a particular feature (e.g., gene *i*). Denote the gene length with exons by l<sub>i</sub>. TPM (Transcripts Per Kilobase Million) can be calculated as, 
 
@@ -147,7 +170,8 @@ rc_tpm <- log2(rcpl/depth_sf)
 rc_tpm[is.infinite(rc_tpm)] <- 0.
 
 log2tpm_file <- sprintf('%s.log2tpm.tsv',gene_read_count_fn)
-write.table(rc_tpm,file=log2tpm_file,quote=F,sep='\t',col.names=NA,row.names=T)
+write.table(rc_tpm,file=log2tpm_file,
+	quote=F,sep='\t',col.names=NA,row.names=T)
 ```
 Run the R script at $RNA_HOME/expression/htseq_counts,
 ```bash
@@ -169,7 +193,10 @@ cat ERCC_Controls_Analysis.txt
 
 perl ./Tutorial_ERCC_expression.pl
 
-#The columns (ID, Subgroup, Concentration) are from a vendor inventory information ERCC_Control_Analysis.txt file and two columns (Label, Count) are attached from our read count file (gene_read_counts_table_all_final.tsv)
+# The columns (ID, Subgroup, Concentration) are from a vendor inventory 
+# information ERCC_Control_Analysis.txt file and 
+# two columns (Label, Count) are attached from our read count file 
+# (gene_read_counts_table_all_final.tsv)
 less ercc_read_counts.tsv
 
 Rscript ./Tutorial_ERCC_expression.R ercc_read_counts.tsv
