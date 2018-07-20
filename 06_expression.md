@@ -58,7 +58,7 @@ echo "Check the htseq-count output file  ${HTSEQ_COUNT_DIR}/${bam_base}_gene.tsv
 Run the bash script above to generate a gene-level read count file,
 
 ```bash
-binf
+rc
 bash ./htseq_count.sh
 ```
 
